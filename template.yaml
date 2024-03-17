@@ -1,0 +1,63 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: register-team
+  title: Registered Team application
+  description: Application to register new users to backstage
+spec:
+  owner: dbz-admins
+  type: back-end
+  parameters:
+    - title: Fill in some details of a team to add
+      required:
+        - teamName
+        - permissions
+      properties:
+        teamName:
+          title: Team Name
+          type: string
+          description: Unique ID of the catalog
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        permissions:
+          title: Team Permissions
+          type: array
+          uniqueItems: true
+          ui:widget: checkboxes
+          items:
+            type: string
+            enum:
+              - lighthouse.cataloged-entity-results.read
+              - lighthouse.all-results.read
+            enumNames:
+              - 'LightHouse catalog entity read'
+              - 'LightHouse all results read'
+        children:
+          title: Parent of
+          type: array
+          uniqueItems: true
+          description: Add child groups
+          ui:options:
+            addable: true
+            orderable: true
+            removable: true
+          items:
+            type: object
+            properties:
+              team:
+                title: Groups
+                type: string
+                description: Child groups
+                ui:field: OwnerPicker
+                ui:options:
+                  allowedKinds:
+                    - Group
+  steps:
+    - id: register-team
+      name: Register team to Backstage
+      action: component:registerTeam
+      input:
+        teamName: ${{ parameters.teamName }}
+        permissions: ${{ parameters.permissions }}
+        children: ${{ parameters.children }}

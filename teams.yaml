@@ -1,0 +1,21 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: dbz-admins
+spec:
+  type: team
+  permissions:
+    - lighthouse.cataloged-entity-results.read
+    - lighthouse.all-results.read
+  children: []
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: backend-team
+spec:
+  type: team
+  children: [jobs-team, motors-team]
